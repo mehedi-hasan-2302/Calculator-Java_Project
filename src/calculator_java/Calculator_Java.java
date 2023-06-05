@@ -48,26 +48,26 @@ public class Calculator_Java extends Application {
                     createButtonForNumber("7"),
                     createButtonForNumber("8"),
                     createButtonForNumber("9"),
-                    createButtonForNumber("/"),
+                    createButtonForOperator("/"),
                     
                     
                     createButtonForNumber("4"),
                     createButtonForNumber("5"),
                     createButtonForNumber("6"),
-                    createButtonForNumber("X"),
+                    createButtonForOperator("X"),
                     
                     
                     
                     createButtonForNumber("1"),
                     createButtonForNumber("2"),
                     createButtonForNumber("3"),
-                    createButtonForNumber("-"),
+                    createButtonForOperator("-"),
                     
                     
                     createButtonForNumber("0"),
-                    createButtonForNumber("C"),
-                    createButtonForNumber("="),
-                    createButtonForNumber("+")
+                    createButtonForOperator("C"),
+                    createButtonForOperator("="),
+                    createButtonForOperator("+")
           
         );
         
@@ -76,7 +76,7 @@ public class Calculator_Java extends Application {
         BorderPane root = new BorderPane();
         root.setTop(stackpane);
         root.setCenter(tile);
-        Scene scene = new Scene(root,250,300);
+        Scene scene = new Scene(root,250,310);
         
         primaryStage.setScene(scene);
         primaryStage.setTitle("My Calculator");
@@ -147,9 +147,13 @@ public class Calculator_Java extends Application {
             } 
         
         else{
+            
             if(op.isEmpty()) return;
             long num2 = Long.parseLong(textField.getText());
-            calculate(num1,num2,op);
+            float result = calculate(num1,num2,op);
+            textField.setText(String.valueOf(result));
+            start=true;
+            op="";
       
         }
    
@@ -164,7 +168,7 @@ public class Calculator_Java extends Application {
             case "X":  return num1*num2;
             case "/":  
                 if(num2==0) return 0;
-                return num1/num2;
+                else return num1/num2;
             default:    return 0;
         }
     }
