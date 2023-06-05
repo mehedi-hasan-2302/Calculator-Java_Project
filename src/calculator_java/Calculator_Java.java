@@ -130,12 +130,43 @@ public class Calculator_Java extends Application {
         }
         
         String value = ((Button)e.getSource()).getText();
-        textField.setText(value);
+        textField.setText(textField.getText()+value);
         
     }
     
     private void processOperators(ActionEvent e){
+        String value = ((Button)e.getSource()).getText();
+        if(!value.equals("=")){
+            if(!op.isEmpty())
+                return;
+            
+            num1 = Long.parseLong(textField.getText());
+            op=value;
+            textField.setText("");
         
+            } 
+        
+        else{
+            if(op.isEmpty()) return;
+            long num2 = Long.parseLong(textField.getText());
+            calculate(num1,num2,op);
+      
+        }
+   
+    }
+    
+    
+    
+    private float calculate(long num1, long num2, String operator){
+        switch(operator){
+            case "+":  return num1+num2;
+            case "-":  return num1-num2;
+            case "X":  return num1*num2;
+            case "/":  
+                if(num2==0) return 0;
+                return num1/num2;
+            default:    return 0;
+        }
     }
     
     
