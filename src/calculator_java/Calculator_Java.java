@@ -101,6 +101,7 @@ public class Calculator_Java extends Application {
         Button button = new Button(ch);
         button.setFont(Font.font(18));
         button.setPrefSize(50,50);
+        button.setOnAction(this::processOperators);
         return button;
         
         
@@ -111,6 +112,11 @@ public class Calculator_Java extends Application {
         Button button = new Button(ch);
         button.setFont(Font.font(18));
         button.setPrefSize(50,50);
+        button.setOnAction(e->{
+            textField.setText("");
+            op="";
+            start=true;
+        });
         return button;
         
         
@@ -118,6 +124,13 @@ public class Calculator_Java extends Application {
     
     
     private void processNumbers(ActionEvent e){
+        if(start){
+            textField.setText("");
+            start=false;
+        }
+        
+        String value = ((Button)e.getSource()).getText();
+        textField.setText(value);
         
     }
     
