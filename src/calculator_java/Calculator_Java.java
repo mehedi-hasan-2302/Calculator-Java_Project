@@ -9,9 +9,14 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.paint.Color;
+
 import javafx.stage.Stage;
 import javafx.scene.text.Font;
 
@@ -25,6 +30,7 @@ public class Calculator_Java extends Application {
     private long num1=0;
     private String op="";
     private boolean start =true;
+    private boolean undefined = false;
     
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -32,10 +38,12 @@ public class Calculator_Java extends Application {
         textField.setFont(Font.font(20));
         textField.setPrefHeight(50);
         textField.setAlignment(Pos.CENTER_RIGHT);
+       
         textField.setEditable(false);
         
         StackPane stackpane = new StackPane();
         stackpane.setPadding( new Insets(10,10,10,10));
+        
         stackpane.getChildren().add(textField);
         
         
@@ -65,7 +73,7 @@ public class Calculator_Java extends Application {
                     
                     
                     createButtonForNumber("0"),
-                    createButtonForOperator("C"),
+                    createButtonForClear("C"),
                     createButtonForOperator("="),
                     createButtonForOperator("+")
           
@@ -76,7 +84,10 @@ public class Calculator_Java extends Application {
         BorderPane root = new BorderPane();
         root.setTop(stackpane);
         root.setCenter(tile);
+        root.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE,CornerRadii.EMPTY,Insets.EMPTY)));
+
         Scene scene = new Scene(root,250,310);
+      //  scene.setFill(Color.MEDIUMPURPLE);
         
         primaryStage.setScene(scene);
         primaryStage.setTitle("My Calculator");
@@ -108,18 +119,17 @@ public class Calculator_Java extends Application {
     }
     
     
-    private Button createButtonForClear(String ch){
+   private Button createButtonForClear(String ch){
         Button button = new Button(ch);
+        button.setPrefSize(50, 50);
         button.setFont(Font.font(18));
-        button.setPrefSize(50,50);
         button.setOnAction(e->{
             textField.setText("");
-            op="";
-            start=true;
-        });
+            op = "";
+            start = true;
+});
         return button;
-        
-        
+
     }
     
     
@@ -143,15 +153,22 @@ public class Calculator_Java extends Application {
             num1 = Long.parseLong(textField.getText());
             op=value;
             textField.setText("");
+           
         
             } 
         
         else{
             
             if(op.isEmpty()) return;
+            
             long num2 = Long.parseLong(textField.getText());
-            float result = calculate(num1,num2,op);
-            textField.setText(String.valueOf(result));
+            float result = calculate(num1,num2,op); 
+            boolean und_result = UNDEFINE(num2, op);
+            
+            
+            if(und_result) textField.setText("UNDEFINED");
+            else textField.setText(String.valueOf(result));
+         
             start=true;
             op="";
       
@@ -161,18 +178,22 @@ public class Calculator_Java extends Application {
     
     
     
-    private float calculate(long num1, long num2, String operator){
+    private float calculate(long num1,long  num2, String operator){
         switch(operator){
             case "+":  return num1+num2;
             case "-":  return num1-num2;
             case "X":  return num1*num2;
             case "/":  
-                if(num2==0) return 0;
+                if(num2==0)    return 0;
                 else return num1/num2;
             default:    return 0;
         }
     }
     
+    private boolean UNDEFINE (long num2,String operator){
+        if(operator =="/" && num2==0) return true;
+        else return false;
+    }
     
     public static void main(String[] args) {
         launch(args);
